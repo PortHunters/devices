@@ -20,6 +20,8 @@ move /Y %ROM%\boot_PORT.img %Tools%\boot_PORT.img
 
 call %Tools%\MTK_unpack.bat boot_PORT.img 
 
+call %Tools%\BR.jar
+
 copy /Y %Repo%\kernel\* %Tools%\boot_PORT\
 copy /Y %Repo%\rmdisk\* %Tools%\boot_PORT\rmdisk\
 
