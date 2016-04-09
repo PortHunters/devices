@@ -1,8 +1,9 @@
 @echo off
 
 cd %~dp0
-chcp 1251 >nul
+chcp 1251
 if (%1)==() (
+	echo Select image
 		goto end
 )
 
@@ -17,6 +18,10 @@ rem очищаем результаты поиска
 bin\sfk166.exe find bin\offset.txt -pat offset>bin\off2.txt
 bin\sfk166.exe replace bin\off2.txt -binary /20/0A/ -yes
 cls
+
+echo Boot_Recovery_Repack by michfood Jan 2015
+echo  MTK_unpack.bat v4
+echo.
 
 if exist %~N1 rd /s /q %~N1 >nul
 
@@ -40,17 +45,34 @@ FOR /F %%G IN (bin\off2.txt) DO (
 	)
 )
 FOR %%i IN (%1) DO ( set /A boot_size=%%~Zi )
+echo.
+echo - size of %1 %boot_size% byte
+echo - kernel offset     - %ofs1%
+echo - ram_header offset - %ofs2%
+echo - ram_disk offset   - %ofs3%
+echo.
 
 del bin\offset.txt
 del bin\off2.txt
 md %~N1
+echo - extracting kernel_header...
 bin\sfk166.exe partcopy %1 -fromto 0x0 %ofs1% %~N1\kernel_header -yes
+echo.
+echo - extracting kernel...
 bin\sfk166.exe partcopy %1 -fromto %ofs1% %ofs2% %~N1\kernel -yes
+echo.
+echo - extracting ram_header...
 bin\sfk166.exe partcopy %1 -fromto %ofs2% %ofs3% %~N1\ram_header -yes
+echo.
+echo - extracting ram_disk...
 bin\sfk166.exe partcopy %1 -fromto %ofs3% %boot_size% %~N1\ram_disk.gz -yes
+echo.
+echo - unpack ram_disk.gz...
 bin\7z.exe -tgzip x -y %~N1\ram_disk.gz -o%~N1\gz >nul
 move %~N1\gz\* %~N1\ram_disk>>nul
 rd %~N1\gz
+echo.
+echo - unpack ram_disk.cpio...
 md %~N1\rmdisk
 cd %~N1
 cd rmdisk
@@ -58,6 +80,10 @@ cd rmdisk
 cd ..
 cd ..
 copy %1 %~N1/%1>>nul
+echo.
+echo.
+echo - Done.
+echo.
 if exist "%~N1/kernel" (
 	echo - %~N1/kernel exist.        Success.
 ) else (
@@ -73,4 +99,5 @@ if exist "%~N1/rmdisk/*" (
 ) else (
 	echo - %~N1/rmdisk is empty.     Fail.
 )
+echo.
 :end
