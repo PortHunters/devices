@@ -26,7 +26,7 @@ move /Y %ROM%\boot_PORT.img %Tools%\boot_PORT.img
 
 call %Tools%\MTK_unpack.bat boot_PORT.img 
 
-java -jar %pht%\ph-rr.jar %ROM%
+java -jar %pht%\ph-rr.jar %RD%
 java -jar %pht%\ph-cr.jar
 java -jar %pht%\ph-id.jar
 java -jar %pht%\ph-us.jar %ROM%
