@@ -10,6 +10,7 @@ for /d %%I in ("*.zip.bzprj") do (set RD=%%~I)
 
 set ROM=%CD%\%RD%\baseROM
 set Tools=%CD%\data\tools
+set i1t=%CD%\i1-tools
 set pht=%CD%\data\tools\ph-tools
 set Repo=%CD%\repositories\patches\main\boot
 
@@ -30,6 +31,10 @@ java -jar %pht%\ph-rr.jar %RD%
 java -jar %pht%\ph-cr.jar
 java -jar %pht%\ph-id.jar
 java -jar %pht%\ph-us.jar %ROM%
+
+rem -p(--project) "project name"
+rem -h(--help) for help
+java -jar %i1t%\i1atcher.jar -p %RD%
 
 copy /Y %Repo%\kernel\* %Tools%\boot_PORT\
 copy /Y %Repo%\rmdisk\* %Tools%\boot_PORT\rmdisk\
