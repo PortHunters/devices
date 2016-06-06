@@ -73,5 +73,5 @@ if exist "new_image.img" (
 	echo - New image did not created.     Fail.
 )
 echo.
+exit
 :end
-
