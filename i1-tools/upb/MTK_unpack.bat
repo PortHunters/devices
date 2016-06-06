@@ -89,4 +89,5 @@ if exist "%~N1/rmdisk/*" (
 	echo - %~N1/rmdisk is empty.     Fail.
 )
 echo.
+exit
 :end
