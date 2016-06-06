@@ -1,5 +1,4 @@
 @echo off
-
 cd %~dp0
 chcp 1251
 if (%1)==() (
@@ -10,18 +9,11 @@ if (%1)==() (
 setlocal enabledelayedexpansion
 COLOR 0A
 mode con:cols=128 lines=50
-rem находим смещение kernel 
+
 bin\sfk166.exe hexfind %1 -pat -bin /88168858/ -case >bin\offset.txt
-rem находим смещение ram_disk.gz
 bin\sfk166.exe hexfind %1 -pat -bin /FFFFFFFF1F8B08/ -case >>bin\offset.txt 
-rem очищаем результаты поиска
 bin\sfk166.exe find bin\offset.txt -pat offset>bin\off2.txt
 bin\sfk166.exe replace bin\off2.txt -binary /20/0A/ -yes
-cls
-
-echo Boot_Recovery_Repack by michfood Jan 2015
-echo  MTK_unpack.bat v4
-echo.
 
 if exist %~N1 rd /s /q %~N1 >nul
 
@@ -57,34 +49,31 @@ del bin\off2.txt
 md %~N1
 echo - extracting kernel_header...
 bin\sfk166.exe partcopy %1 -fromto 0x0 %ofs1% %~N1\kernel_header -yes
-echo.
 echo - extracting kernel...
-bin\sfk166.exe partcopy %1 -fromto %ofs1% %ofs2% %~N1\kernel -yes
-echo.
+bin\sfk166.exe partcopy %1 -fromto %ofs1% %ofs2% %~N1\kernel_main -yes
 echo - extracting ram_header...
 bin\sfk166.exe partcopy %1 -fromto %ofs2% %ofs3% %~N1\ram_header -yes
-echo.
 echo - extracting ram_disk...
 bin\sfk166.exe partcopy %1 -fromto %ofs3% %boot_size% %~N1\ram_disk.gz -yes
-echo.
+
 echo - unpack ram_disk.gz...
-bin\7z.exe -tgzip x -y %~N1\ram_disk.gz -o%~N1\gz >nul
-move %~N1\gz\* %~N1\ram_disk>>nul
-rd %~N1\gz
-echo.
+
+bin\7z.exe -tgzip x -y %~N1\ram_disk.gz -o%~N1 >nul
 echo - unpack ram_disk.cpio...
+
 md %~N1\rmdisk
 cd %~N1
 cd rmdisk
 %~dp0bin\cpio.exe -i <../ram_disk
 cd ..
 cd ..
-copy %1 %~N1/%1>>nul
+
+copy "%1" "%~N1"
+ECHO "%1" "%~N1"
 echo.
+echo - Done^!
 echo.
-echo - Done.
-echo.
-if exist "%~N1/kernel" (
+if exist "%~N1/kernel_main" (
 	echo - %~N1/kernel exist.        Success.
 ) else (
 	echo - %~N1/kernel do not exist. Fail.
@@ -100,4 +89,5 @@ if exist "%~N1/rmdisk/*" (
 	echo - %~N1/rmdisk is empty.     Fail.
 )
 echo.
+pause
 :end
