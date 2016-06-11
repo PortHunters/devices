@@ -9,6 +9,6 @@ set Rom=%CD%\%Project%\baseROM\
 set Tools=%CD%\i1-tools\
 set Repo=%CD%\repositories\
 
-rem standart User Args: -uarg:boot %Tools%\boot-tools\, -uarg:repo %Repo%, -uarg:rom %Rom%
+rem standart Args: -pdir %Repo%\patches\main\other\ -uarg:boot %Tools%\boot-tools\ -uarg:repo %Repo% -uarg:rom %Rom%
 
-java -jar %Tools%\i1atcher.jar -uarg:boot %Tools%\boot-tools\ -uarg:repo %Repo% -uarg:rom %Rom%
+java -jar %Tools%\i1atcher.jar -pdir %Repo%\patches\main\other\ -uarg:boot %Tools%\boot-tools\ -uarg:repo %Repo% -uarg:rom %Rom%
