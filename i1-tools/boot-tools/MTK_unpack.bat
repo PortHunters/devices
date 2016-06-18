@@ -50,7 +50,7 @@ md %~N1
 echo - extracting kernel_header...
 bin\sfk166.exe partcopy %1 -fromto 0x0 %ofs1% %~N1\kernel_header -yes
 echo - extracting kernel...
-bin\sfk166.exe partcopy %1 -fromto %ofs1% %ofs2% %~N1\kernel_main -yes
+bin\sfk166.exe partcopy %1 -fromto %ofs1% %ofs2% %~N1\kernel -yes
 echo - extracting ram_header...
 bin\sfk166.exe partcopy %1 -fromto %ofs2% %ofs3% %~N1\ram_header -yes
 echo - extracting ram_disk...
@@ -72,22 +72,5 @@ copy "%1" "%~N1"
 ECHO "%1" "%~N1"
 echo.
 echo - Done^!
-echo.
-if exist "%~N1/kernel_main" (
-	echo - %~N1/kernel exist.        Success.
-) else (
-	echo - %~N1/kernel do not exist. Fail.
-)
-if exist "%~N1/rmdisk" (
-	echo - %~N1/rmdisk exist.        Success.
-) else (
-	echo - %~N1/rmdisk do not exist. Fail.
-)
-if exist "%~N1/rmdisk/*" (
-	echo - %~N1/rmdisk is not empty. Success.
-) else (
-	echo - %~N1/rmdisk is empty.     Fail.
-)
-echo.
 exit
 :end

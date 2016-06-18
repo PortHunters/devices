@@ -55,7 +55,7 @@ rem set BASE="0x$(od -A n -h -j 34 -N 2 ./boot.img|sed 's/ //g')0000"
 rem set BASE="0x10000000"
 rem set CMDLINE="$(od -A n --strings -j 64 -N 512 ./boot.img)"
 echo - make image...
-%~dp0bin\mkbootimg.exe --kernel ../kernel_main --ramdisk ../new_ram_with_header -o ../new_image.img 
+%~dp0bin\mkbootimg.exe --kernel ../kernel --ramdisk ../new_ram_with_header -o ../new_image.img 
 del size.txt >nul
 copy ..\new_image.img %~dp0\new_image.img
 move ..\ram_disk_old ..\ram_disk >nul
@@ -66,12 +66,6 @@ del tmp1.dat>nul
 del 1.part*>nul
 
 echo - Done^!
-echo.
-if exist "new_image.img" (
-	echo - New image saved as new_image.img. Success.
-) else (
-	echo - New image did not created.     Fail.
-)
-echo.
 exit
 :end
+
