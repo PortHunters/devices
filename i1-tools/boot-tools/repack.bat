@@ -114,4 +114,4 @@ goto end
 :error
 echo "There is an error in your folder. The kernel or ramdisk is missing. Exit script."
 :end
-pause
+exit
