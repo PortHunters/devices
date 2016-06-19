@@ -78,7 +78,5 @@ goto end
 :ziperror
 echo "Your ramdisk archive is corrupt. Are you trying to unpack a MTK image with regular script?"
 goto end
-
-echo %file% %folder% %isMTK%
-pause
 :end
+exit
